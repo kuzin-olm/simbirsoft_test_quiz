@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div class="inner cover">
+        <h1 class="cover-heading">{{ quiz.title }}</h1>
+        <p class="lead">{{ quiz.text }}</p>
+        <p class="lead">
+            {% if start_uuid %}
+                <a href="{% url 'question' start_uuid %}" class="btn btn-lg btn-default">{{ quiz.btn_text }}</a>
+            {% else %}
+                <button class="btn btn-lg btn-default" disabled>{{ quiz.btn_text }}</button>
+            {% endif %}
+        </p>
+    </div>
+
+{% endblock %}

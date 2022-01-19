@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from .views import StartView, QuestionView, ResultView
+
 urlpatterns = [
+    path('', StartView.as_view(), name='start'),
+    path('q-<str:uuid>/', QuestionView.as_view(), name='question'),
+    path('result/', ResultView.as_view(), name='result'),
     path('admin/', admin.site.urls),
 ]

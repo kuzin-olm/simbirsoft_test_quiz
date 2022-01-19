@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="inner cover">
+        <h1 class="cover-heading">Ваш результат:</h1>
+        <h1 class="cover-heading">{{ score|floatformat:2 }} </h1>
+    </div>
+{% endblock %}
