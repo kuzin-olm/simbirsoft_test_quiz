@@ -35,15 +35,22 @@ class QuizResultService:
         self.answers_dto = answers_dto
 
     def _get_question_by_uuid(self, uuid: str) -> QuestionDTO:
+        """получить question dto из переданного в конструктор класса quiz_dto"""
         questions = filter(lambda q: q.uuid == uuid, self.quiz_dto.questions)
         return list(questions)[0]
 
     @staticmethod
     def _get_choice_from_question_by_uuid(question: QuestionDTO, uuid: str) -> ChoiceDTO:
+        """получить choice dto из переданного в функцию question dto"""
         choices = filter(lambda c: c.uuid == uuid, question.choices)
         return list(choices)[0]
 
     def get_result(self) -> float:
+        """
+        расчитывает результат прохождения теста
+
+        return: от 0.00 до 1.00 включительно, где 0 - это 0% прохождения теста, а 1 - 100%.
+        """
         total_score = 0.0
 
         for answer_dto in self.answers_dto.answers:
@@ -55,7 +62,11 @@ class QuizResultService:
                 if choice.is_correct:
                     score += 1
 
-            qty_true_choices = len(list(filter(lambda c: c.is_correct, quiz_question.choices)))
-            total_score += 1 if score == qty_true_choices else 0
+            # кол-во правильных ответов
+            qty_true_choices = len(list(filter(lambda _choice: _choice.is_correct, quiz_question.choices)))
+            # засчитать правильный ответ, если
+            # кол-во ответов == кол-во правильных ответов
+            # и кол-во засчитанных ответов == кол-во правильных ответов
+            total_score += 1 if score == qty_true_choices == len(answer_dto.choices) else 0
 
         return round(total_score/len(self.quiz_dto.questions), 2)
